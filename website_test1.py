@@ -3,6 +3,7 @@ import sqlite3
 import boto3
 import os
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
@@ -89,6 +90,13 @@ def admin_panel():
     return render_template('admin_panel.html', menu_items=menu_items)
 
 
+from flask import send_from_directory
+
+# Route to serve files from the 'uploads' directory
+@app.route('/uploads/<filename>')
+def serve_uploads(filename):
+    return send_from_directory(os.path.join(app.root_path, 'uploads'), filename)
+
 @app.route('/admin/add', methods=['POST'])
 def add_item():
     if not session.get('admin'):
@@ -108,11 +116,17 @@ def add_item():
     if image:
         filename = secure_filename(image.filename)
         upload_path = os.path.join(app.root_path, 'uploads', filename)
+        print(f"This is upload_path: {upload_path}")
+        # Ensure the uploads directory exists
         if not os.path.exists(os.path.join(app.root_path, 'uploads')):
             os.makedirs(os.path.join(app.root_path, 'uploads'))
+        # Save the uploaded file
         image.save(upload_path)
-        image_path = f'..uploads/{filename}'
+        # Create the path that will be saved in the database
+        image_path = f'/uploads/{filename}'
+        print(f"This is image_path: {image_path}")
 
+        # Save item details to the database
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
         try:
@@ -124,7 +138,9 @@ def add_item():
             flash(f'Error: {e}', 'error')
         finally:
             conn.close()
+
     return redirect(url_for('admin_panel'))
+
 
 
 
