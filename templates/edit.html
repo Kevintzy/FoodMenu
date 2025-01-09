@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .edit-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        .edit-container h1 {
+            text-align: center;
+        }
+        .edit-container form {
+            display: flex;
+            flex-direction: column;
+        }
+        .edit-container input, .edit-container button, textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 1em;
+        }
+        .edit-container button {
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="edit-container">
+        <h1>Edit Item</h1>
+        <form method="post">
+            <label for="name">Item Name:</label>
+            <input type="text" name="name" value="{{ item[1] }}" required><br><br>
+        
+            <label for="price">Price:</label>
+            <input type="number" step="0.01" name="price" value="{{ item[3] }}" required><br><br>
+        
+            <label for="options">Options (comma-separated):</label>
+            <input type="text" name="options" value="{{ item[6] }}"><br><br>
+            
+            <label for="description">Description:</label>
+            <textarea name="description" rows="4" required>{{ item[5] }}</textarea><br><br>
+            
+            <button type="submit">Update Item</button>
+        </form>        
+        <a href="/admin_panel">Back to Panel</a>
+    </div>
+</body>
+</html>

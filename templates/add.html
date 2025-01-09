@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add New Task</title>
+</head>
+<body>
+    <h1>Add New Task</h1>
+    <form method="post" enctype="multipart/form-data">
+        <label for="name">Item Name:</label>
+        <input type="text" name="name" required><br><br>
+    
+        <label for="price">Price:</label>
+        <input type="number" step="0.01" name="price" required><br><br>
+    
+        <label for="category">Category:</label>
+        <input type="text" name="category" required><br><br>
+    
+        <label for="description">Description:</label>
+        <textarea name="description" required></textarea><br><br>
+    
+        <label for="image">Upload Image:</label>
+        <input type="file" name="image" required><br><br>
+    
+        <label for="options">Options (comma-separated, e.g., Hot, Cold):</label>
+        <input type="text" name="options"><br><br>
+    
+        <button type="submit">Add Item</button>
+    </form>    
+    
+    <br>
+    <a href="/">Back to Home</a>
+</body>
+</html>

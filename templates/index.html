@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Order System</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+        }
+
+        /* Background video */
+        .bg-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+        }
+
+        /* Centered content */
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .content a {
+            display: inline-block;
+            padding: 20px 40px;
+            margin: 10px;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-size: 1.5em;
+            text-decoration: none;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Hamburger menu */
+        .hamburger {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            cursor: pointer;
+            width: 50px;
+        }
+
+        .menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 30px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .menu a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Restaurant details section */
+        .details {
+            background: linear-gradient(to right, #C1CFA1, #A5B68D, #EDE8DC, #E7CCCC);
+            padding: 50px 20px;
+            margin-top: 100vh;
+            text-align: center;
+        }
+
+        .details img {
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .details h2 {
+            margin: 20px 0;
+            font-size: 1.4em;
+        }
+
+        .details p, .details ul {
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .details strong {
+            color: #555;
+        }
+
+        .admin-link {
+            background-color: #6c757d;
+        }
+
+        .admin-link:hover {
+            background-color: #a9bbce;
+        }
+    </style>
+    <script>
+        // Toggle the visibility of the menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
+        }
+
+        // Smooth scroll to section
+        function scrollToSection(id) {
+            const section = document.getElementById(id);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</head>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop class="bg-video">
+        <source src="/static/bg-video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Hamburger button -->
+    <img src="/static/hamburger-icon.jpg" alt="Menu" class="hamburger" onclick="toggleMenu()">
+
+    <!-- Menu that opens when hamburger is clicked -->
+    <div class="menu" id="menu">
+        <a href="javascript:void(0)" onclick="scrollToSection('about')">About Us</a>
+        <a href="javascript:void(0)" onclick="scrollToSection('owners')">Restaurant Owners</a>
+        <a href="javascript:void(0)" onclick="scrollToSection('location')">Location</a>
+        <a href="javascript:void(0)" onclick="scrollToSection('hours')">Operation Hours</a>
+        <a href="/admin_login">Admin Login</a>
+    </div>
+
+    <!-- Main content -->
+    <div class="content">
+        <h1>Welcome to Memories Restaurant</h1>
+        <a href="/menu/food">Order Food</a>
+        <a href="/menu/beverages">Order Beverages</a>
+        <br><br>
+        <a href="/cart">View Cart</a>
+    </div>
+
+
+    <!-- Details section -->
+    <div class="details">
+        <!-- Logo and restaurant name -->
+        <h2>Memories Restaurant</h2>
+        <img src="/static/logo.jpg" alt="Memories Restaurant Logo">
+        <br><br>
+
+    <!-- About us -->
+    <h2 id="about">About Us</h2>
+    <p>
+        At Memories Restaurant, we take pride in offering a peaceful and inviting environment where you can savor 
+        delicious Western cuisine. Our goal is to provide a quiet and comfortable setting for you to relax, connect 
+        with family and friends, and create cherished moments. Whether it’s a casual meal or a special gathering, 
+        Memories Restaurant is the perfect place to enjoy good food and make lasting memories.
+    </p>
+    <br><br>
+
+    <!--Restaurant owners -->
+    <h2 id="owners">Restaurant Owners</h2>
+    <p>Kevin Tham, Ng Xue Nie, Tan Wei Xiang</p>
+    <img src="/static/owners.jpg" alt="Restaurant Owners">
+    <br><br>
+
+    <!-- Location -->
+    <h2 id="location">Location</h2>
+    <p>Jalan Ayer Keroh, Melaka Tengah, 75450, Melaka</p>
+    <img src="/static/map.jpg" alt="Location Map">
+    <br><br>
+
+    <!-- Operation hours -->
+    <h2 id="hours">Operation Hours</h2>
+    <ul>
+        <li>Monday - Friday: 12.00 PM - 10.00 PM</li>
+        <li>Saturday - Sunday: 11.00 AM - 11.00 PM</li>
+    </ul>
+
+    </div>
+</body>
+</html>

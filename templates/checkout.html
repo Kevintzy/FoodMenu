@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <style>
+        .flash-message {
+            background-color: #70804b;
+            color: white;
+            padding: 15px;
+            margin: 20px auto;
+            width: 60%;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'checkout' %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+
+    <p>Kindly proceed your payment at counter.</p>
+    
+    <a href="/">Back to Home</a>
+</body>
+</html>

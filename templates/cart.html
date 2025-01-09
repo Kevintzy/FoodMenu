@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart</title>
+    <style>
+        body {
+            background-color: rgba(151,169,124,0.8);
+            color: rgb(0, 0, 0);
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .cart-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 60%;
+        }
+        li {
+            background-color: rgba(243,237,222,0.9);
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .item-details {
+            text-align: left;
+            display: flex;
+            align-items: center;
+        }
+        .item-details img {
+            width: 100px;
+            height: auto;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+        select {
+            margin-left: 10px;
+            padding: 5px;
+            font-size: 1em;
+        }
+        .remove-link {
+            color: rgb(240, 135, 135);
+            text-decoration: none;
+        }
+        .remove-link:hover {
+            text-decoration: underline;
+        }
+        .checkout-buttons {
+            margin-top: 30px;
+        }
+        .checkout-buttons a, button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .update {
+            background-color: #93afb8;
+            color: rgb(0, 0, 0);
+        }
+        .checkout {
+            background-color: #e9da86;
+            color: rgb(0, 0, 0);
+        }
+        .checkout:hover {
+            background-color: #867653;
+            transform: scale(1.05);
+        }
+        .back-home-container {
+            margin-top: 20px;
+        }
+        .back-home {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 2px solid white;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            padding: 15px 30px;
+            display: inline-block;
+            border-radius: 10px;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+        }
+        .back-home:hover {
+            background-color: rgba(151, 148, 140, 0.9);
+            transform: scale(1.05);
+        }
+    </style>
+    <script>
+        // Listen for changes to the quantity dropdown
+        function updateQuantity(itemId, options) {
+            const quantity = document.getElementById(`quantity_${itemId}_${options}`).value;
+
+            // Send AJAX request to update the cart
+            fetch('/update_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    options: options,
+                    quantity: quantity,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-price').textContent = '$' + data.total;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <div class="cart-container">
+        <ul>
+            {% for item in items %}
+            <li>
+                <div class="item-details">
+                    <img src="{{ item[4] }}" alt="{{ item[1] }}">
+                    <div>
+                        <strong>{{ item[1] }}</strong> - ${{ item[3] }}
+                        <p>Options: {{ item[-1] }}</p>
+                    </div>
+                </div>
+                <div>
+                    <label for="quantity_{{ item[0] }}_{{ item[-1] }}">Quantity:</label>
+                    <select name="quantity_{{ item[0] }}_{{ item[-1] }}" 
+                            id="quantity_{{ item[0] }}_{{ item[-1] }}"
+                            onchange="updateQuantity('{{ item[0] }}', '{{ item[-1] }}')">
+                        {% for i in range(1, 11) %}
+                            <option value="{{ i }}" {% if item[-2] == i %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <a href="/remove_from_cart/{{ item[0] }}_{{ item[-1] }}" class="remove-link">Remove</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>Total: <span id="total-price">${{ total }}</span></h2>
+        <div class="checkout-buttons">
+            <a href="/checkout" class="checkout">Proceed to Checkout</a>
+        </div>
+        <div class="back-home-container">
+            <a href="/" class="back-home">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
