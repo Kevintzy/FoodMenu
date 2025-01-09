@@ -1,0 +1,6 @@
+Flask
+boto3
+werkzeug
+gunicorn
+sqlite3
+Flask-SQLAlchemy
