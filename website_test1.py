@@ -111,7 +111,7 @@ def add_item():
         if not os.path.exists(os.path.join(app.root_path, 'uploads')):
             os.makedirs(os.path.join(app.root_path, 'uploads'))
         image.save(upload_path)
-        image_path = f'uploads/{filename}'
+        image_path = f'..uploads/{filename}'
 
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
