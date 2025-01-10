@@ -83,7 +83,7 @@ def admin_panel():
     menu_items = cursor.fetchall()
     conn.close()
 
-    return render_template('admin_panelMYSQL.html', menu_items=menu_items)
+    return render_template('SQLadmin_panel.html', menu_items=menu_items)
 
 @app.route('/uploads/<filename>')
 def serve_uploads(filename):
