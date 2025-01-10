@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .panel-container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .add-item {
+            margin-top: 20px;
+        }
+        .logout-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-link:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel-container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <h1>Admin Panel</h1>
+        <h2>Manage Menu</h2>
+        <table>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Options</th>
+                <th>Action</th>
+            </tr>
+            {% for item in menu_items %}
+            <tr>
+                <td>{{ item['name'] }}</td>  <!-- Item Name -->
+                <td>${{ item['price'] }}</td>  <!-- Price -->
+                <td><img src="{{ item['image_url'] }}" width="80" alt="{{ item['name'] }}"></td>  <!-- Image -->
+                <td>{{ item['options'] or 'N/A' }}</td>  <!-- Options -->
+                <td>
+                    <a href="/admin/edit/{{ item['id'] }}">Edit</a> |
+                    <a href="/admin/delete/{{ item['id'] }}" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <div class="add-item">
+            <h2>Add New Item</h2>
+            <form method="post" action="/admin/add" enctype="multipart/form-data">
+                <input type="text" name="name" placeholder="Item Name" required>
+                
+                <input type="number" name="price" placeholder="Price" step="0.01" required>
+                
+                <input type="file" name="image" required>
+            
+                <label for="category">Category:</label>
+                <select name="category" required>
+                    <option value="food">Food</option>
+                    <option value="beverages">Beverages</option>
+                </select>
+                
+                <label for="description">Description:</label>
+                <textarea name="description" required></textarea>
+                
+                <button type="submit">Add Item</button>
+            </form>                        
+        </div>
+
+        <a href="/admin_logout" class="logout-link">Logout</a>
+    </div>
+</body>
+</html>

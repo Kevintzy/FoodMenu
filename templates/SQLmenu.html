@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ category.capitalize() }}</title>
+    <style>
+        body {
+            background-image: url('/static/bg.jpg');
+            background-size: cover;
+            color: rgb(0, 0, 0);
+        }
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .menu-item {
+            display: flex;
+            align-items: center;
+            background-color: #e2d2a9;
+            margin: 15px 0;
+            width: 80%;
+            padding: 20px;
+            border: 2px solid #c7ba9cd3;
+            border-radius: 15px;
+        }
+        .menu-item img {
+            width: 180px;
+            height: auto;
+            border-radius: 10px;
+            margin-right: 30px;
+        }
+        .menu-item-content {
+            flex: 1;
+        }
+        .menu-item h2, .menu-item p {
+            margin: 10px 0;
+            font-size: 1.5em;
+        }
+        .price {
+            color: #9e4c0d;
+            font-size: 1.8em;
+        }
+        .flash-message {
+            background-color: #b5c99a;
+            color: black;
+            padding: 15px;
+            margin: 20px auto;
+            width: 60%;
+            text-align: center;
+            border-radius: 10px;
+            font-size: 1.2em;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 40px;
+        }
+        .cart-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            height: 70px;
+            border: 2px solid white;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: relative;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .cart-logo img {
+            width: 40px;
+            height: 40px;
+        }
+        .cart-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #6c9d46;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1em;
+            font-weight: bold;
+        }
+        .cart-logo:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        .back-home {
+            display: inline-block;
+            padding: 15px 30px;
+            border: 2px solid white;
+            border-radius: 10px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2em;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        .back-home:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <h1>{{ category.capitalize() }} Menu</h1>
+        {% for item in items %}
+        <div class="menu-item">
+            <img src="{{ item['image_url'] }}" alt="{{ item['name'] }}">
+            <div class="menu-item-content">
+                <h2>{{ item['name'] }}</h2>
+                <p>{{ item['description'] }}</p>
+                <p class="price">${{ item['price'] }}</p>
+                <form method="post" action="/add_to_cart/{{ item['id'] }}">
+                    {% if item['options'] %}
+                        <label>Choose Option:</label>
+                        <select name="options_{{ item['id'] }}">
+                            {% for option in item['options'].split(',') %}
+                                <option value="{{ option }}">{{ option }}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="hidden" name="options_{{ item['id'] }}" value="Default">
+                    {% endif %}
+                    <button type="submit">Add to Cart</button>
+                </form>                
+            </div>
+        </div>
+        {% endfor %}        
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    </div>
+
+    <div class="button-container">
+        <a href="/cart" class="cart-logo">
+            <img src="/static/cart_logo.jpg" alt="Cart">
+            {% if session.get('cart') %}
+                <div class="cart-counter">{{ session['cart']|length }}</div>
+            {% endif %}
+        </a>
+        <a href="/" class="back-home">Back to Home</a>
+    </div>
+</body>
+</html>
