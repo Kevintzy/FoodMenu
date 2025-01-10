@@ -5,17 +5,20 @@ CREATE TABLE tasks (
     image_url VARCHAR(255)
 );
 
+-- Updated items table to include 'options' column
 CREATE TABLE items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255),
     category VARCHAR(255),
     price FLOAT,
     image_url VARCHAR(255),
-    description TEXT
+    description TEXT,
+    options VARCHAR(255)  -- Added 'options' column
 );
 
-INSERT INTO items VALUES (5, 'Burger', 'food', 8.0, '/static/burger.jpg', 'Juicy beef burger with lettuce and cheese');
-INSERT INTO items VALUES (6, 'Pizza', 'food', 12.0, '/static/pizza.jpg', 'Cheesy pepperoni pizza with tomato sauce.');
-INSERT INTO items VALUES (7, 'Water', 'beverages', 1.0, '/static/water.jpg', 'Bottled mineral water.');
-INSERT INTO items VALUES (8, 'Coffee', 'beverages', 3.0, '/static/coffee.jpg', 'Energizing cup of joe.');
-INSERT INTO items VALUES (9, 'Spaghetti', 'food', 14.0, '/static/uploads/spaghetti.jpg', 'Delicious spaghetti with beef sauce.');
+-- Insert updated sample items with 'options' values
+INSERT INTO items VALUES (5, 'Burger', 'food', 7.00, '/static/burger.jpg', 'Juicy beef burger with lettuce and cheese.', 'Veg,No Veg');
+INSERT INTO items VALUES (6, 'Pizza', 'food', 12.00, '/static/pizza.jpg', 'Cheesy pepperoni pizza with tomato sauce.', 'Thin,Thick,Stuffed Crust');
+INSERT INTO items VALUES (7, 'Water', 'beverages', 1.00, '/static/water.jpg', 'Bottled mineral water.', 'Cold,Room Temp');
+INSERT INTO items VALUES (8, 'Coffee', 'beverages', 3.00, '/static/coffee.jpg', 'Hot cup of coffee.', 'Hot,Iced');
+INSERT INTO items VALUES (9, 'Spaghetti', 'food', 14.00, '/uploads/spaghetti.jpg', 'Delicious spaghetti with beef sauce.', NULL);
