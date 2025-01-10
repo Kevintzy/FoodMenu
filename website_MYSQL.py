@@ -83,7 +83,7 @@ def admin_panel():
     menu_items = cursor.fetchall()
     conn.close()
 
-    return render_template('admin_panel.html', menu_items=menu_items)
+    return render_template('admin_panelMYSQL.html', menu_items=menu_items)
 
 @app.route('/uploads/<filename>')
 def serve_uploads(filename):
@@ -135,7 +135,7 @@ def edit_item(item_id):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM items WHERE id = %s", (item_id,))
-    item = cursor.fetchone()
+    item = cursor.fetchone()  # Returns a dictionary when using DictCursor
 
     if request.method == 'POST':
         name = request.form['name']
@@ -143,16 +143,23 @@ def edit_item(item_id):
         options = request.form['options']
         description = request.form['description']
 
-        cursor.execute("UPDATE items SET name = %s, price = %s, description = %s, options = %s WHERE id = %s",
-                       (name, price, description, options, item_id))
-        conn.commit()
-        conn.close()
+        try:
+            cursor.execute(
+                "UPDATE items SET name = %s, price = %s, description = %s, options = %s WHERE id = %s",
+                (name, price, description, options, item_id)
+            )
+            conn.commit()
+            flash('Item updated successfully', 'success')
+        except pymysql.MySQLError as e:
+            flash(f"Error: {e}", 'error')
+        finally:
+            conn.close()
 
-        flash('Item updated successfully', 'success')
         return redirect(url_for('admin_panel'))
 
     conn.close()
-    return render_template('edit.html', item=item)
+    return render_template('SQLedit.html', item=item)
+
 
 @app.route('/admin/delete/<int:item_id>')
 def delete_item(item_id):
@@ -179,7 +186,7 @@ def menu(category):
     cursor.execute("SELECT * FROM items WHERE category = %s", (category,))
     items = cursor.fetchall()
     conn.close()
-    return render_template('menu.html', items=items, category=category)
+    return render_template('SQLmenu.html', items=items, category=category)
 
 @app.route('/add_to_cart/<int:item_id>', methods=['POST'])
 def add_to_cart(item_id):
@@ -216,7 +223,7 @@ def cart():
                 items.append(item)
                 total += item['price'] * quantity
     conn.close()
-    return render_template('cart.html', items=items, total=total)
+    return render_template('SQLcart.html', items=items, total=total)
 
 @app.route('/remove_from_cart/<string:key>')
 def remove_from_cart(key):
