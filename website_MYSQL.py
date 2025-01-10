@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.secret_key = 'your-secret-key'  # Required for session handling
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://<MASTER_USERNAME>:<PASSWORD>@<RDS_ENDPOINT>:3306/mywebsite_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://accusnake:kevinxuenieweixiang@<RDS_ENDPOINT>:3306/mywebsite_db'
 
 print(f"Connecting to database: {app.config['SQLALCHEMY_DATABASE_URI']}")
 
@@ -15,8 +15,8 @@ print(f"Connecting to database: {app.config['SQLALCHEMY_DATABASE_URI']}")
 def get_db_connection():
     return pymysql.connect(
         host='<RDS_ENDPOINT>',
-        user='<MASTER_USERNAME>',
-        password='<PASSWORD>',
+        user='accusnake',
+        password='kevinxuenieweixiang',
         database='mywebsite_db',
         cursorclass=pymysql.cursors.DictCursor
     )
