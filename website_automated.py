@@ -2,6 +2,7 @@ import os
 import pymysql
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 # Flask app configuration
 app = Flask(__name__)
@@ -9,10 +10,10 @@ app.config['UPLOAD_FOLDER'] = 'uploads/'
 app.secret_key = 'your-secret-key'  # Required for session handling
 
 # Use environment variables for RDS configuration
-DB_HOST = os.getenv('DB_HOST', 'localhost')  # Default to localhost if not set
-DB_USER = os.getenv('DB_USER', 'root')       # Default to root if not set
-DB_PASSWORD = os.getenv('DB_PASSWORD', '')   # Default to empty if not set
-DB_NAME = os.getenv('DB_NAME', 'test')       # Default to test if not set
+DB_HOST = os.getenv('DB_HOST')  # Default to localhost if not set
+DB_USER = os.getenv('DB_USER')       # Default to root if not set
+DB_PASSWORD = os.getenv('DB_PASSWORD')   # Default to empty if not set
+DB_NAME = os.getenv('DB_NAME')       # Default to test if not set
 
 print(f"Connecting to database at {DB_HOST} with user {DB_USER}")
 
